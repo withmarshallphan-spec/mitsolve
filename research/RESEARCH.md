@@ -1,5 +1,7 @@
 # MIT Solve 2027: research brief and recommendation
 
+> **Superseded (3 Nov 2026):** RefillAhead failed the kill test. See [PIVOT_VERDICT.md](PIVOT_VERDICT.md).
+
 Prepared 3 November 2026. Note on sources: this environment could not open solve.mit.edu or Solve's application PDF directly. Everything below comes from web search results that quote those pages, plus press and peer-reviewed sources. Anything marked **verify** must be checked in the live portal before submitting.
 
 ---
