@@ -303,7 +303,7 @@ function renderActions() {
       <span class="muted">${list.length} patient${list.length === 1 ? '' : 's'} · sorted by priority · tap a row for reasons</span>
       <span class="spacer"></span>
       <button class="btn btn-small" type="button" data-cmd="export-worklist">Export work list (CSV)</button>
-      <button class="btn btn-small" type="button" data-cmd="print-chw">Print CHW task sheets</button>
+      ${EMBED ? '' : '<button class="btn btn-small" type="button" data-cmd="print-chw">Print CHW task sheets</button>'}
     </div>
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Priority</th><th>Patient</th><th>Condition</th><th>Supply</th><th>Action</th><th>Status</th></tr></thead>
@@ -497,7 +497,18 @@ function toast(msg) {
   toast.timer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
+// Embedded previews (sandboxed iframes) block downloads and printing, so
+// there the exports copy to the clipboard instead.
+const EMBED = Boolean(window.__REFILLAHEAD_EMBED);
+
 function download(name, text, type = 'text/csv') {
+  if (EMBED) {
+    navigator.clipboard
+      ?.writeText(text)
+      .then(() => toast(`Copied ${name} to the clipboard (downloads are off in this preview).`))
+      .catch(() => toast('Downloads are off in this preview. Run the app from the repo to export.'));
+    return;
+  }
   const blob = new Blob([text], { type: `${type};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -656,8 +667,18 @@ document.addEventListener('click', (e) => {
     renderMapCard();
     return;
   }
-  if (e.target.closest('#reset-btn')) {
-    if (!confirm('Reset the demo? Statuses, imported data and rule changes will be cleared.')) return;
+  const resetBtn = e.target.closest('#reset-btn');
+  if (resetBtn) {
+    // Two-step confirm inside the page (native confirm() is blocked in some embeds).
+    if (!resetBtn.dataset.armed) {
+      resetBtn.dataset.armed = '1';
+      resetBtn.textContent = 'Click again to reset';
+      setTimeout(() => {
+        delete resetBtn.dataset.armed;
+        resetBtn.textContent = 'Reset demo';
+      }, 4000);
+      return;
+    }
     try {
       localStorage.removeItem(STORE_KEY);
     } catch {
