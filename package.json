@@ -1,0 +1,16 @@
+{
+  "name": "refillahead",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Anticipatory continuity of care: get chronic patients their medicine before floods, cyclones, heatwaves or clinic closures cut them off.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test prototype/tests/*.test.js",
+    "serve": "node prototype/e2e/serve.mjs",
+    "e2e": "node prototype/e2e/smoke.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

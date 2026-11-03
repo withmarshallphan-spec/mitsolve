@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RefillAhead</title>
+  <meta name="description" content="Anticipatory continuity of care: get chronic-care patients their medicine before floods, cyclones, heatwaves or clinic closures cut them off.">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--brand)"/><path d="M9 18a7 7 0 0 1 14 0" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M16 9v6M13 12h6" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M8 23h16" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <div>
+        <div class="brand-name">RefillAhead</div>
+        <div class="brand-sub" id="district-name">Riverbend District</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge badge-warn" title="All names, patients and stock levels are fictional">Synthetic demo data</span>
+      <span class="online" id="online-status" aria-live="polite"></span>
+      <button class="btn btn-ghost" id="reset-btn" type="button">Reset demo</button>
+    </div>
+  </header>
+
+  <section class="how" aria-label="How RefillAhead works">
+    <ol>
+      <li><b>1 · Warning</b><span>Forecast, alert or closure notice arrives</span></li>
+      <li><b>2 · Who runs out</b><span>Match every patient's supply against the disruption window</span></li>
+      <li><b>3 · Act early</b><span>Early refills, CHW deliveries, reroutes, stock transfers, SMS</span></li>
+      <li><b>4 · Confirm &amp; trace</b><span>Track who was reached; trace the rest after the event</span></li>
+    </ol>
+  </section>
+
+  <main id="main">
+    <section class="scenarios" aria-labelledby="scenario-h">
+      <h2 id="scenario-h" class="section-title">What disruption is coming?</h2>
+      <div class="scenario-grid" id="scenario-grid" role="radiogroup" aria-label="Disruption scenario"></div>
+    </section>
+
+    <section class="event-card" id="event-card" aria-live="polite"></section>
+
+    <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+    <div class="layout">
+      <section class="card map-card" aria-labelledby="map-h">
+        <div class="card-head">
+          <h2 id="map-h">Disruption area</h2>
+          <button class="btn btn-small" id="edit-area-btn" type="button" aria-pressed="false">Edit area</button>
+        </div>
+        <p class="hint" id="edit-hint" hidden>Click villages and facilities to add or remove them from the disruption area. The plan updates instantly.</p>
+        <div id="map" class="map"></div>
+        <ul class="legend" aria-label="Map legend">
+          <li><span class="lg lg-village"></span>Village (size = patients)</li>
+          <li><span class="lg lg-risk"></span>Number = patients needing action</li>
+          <li><span class="lg lg-facility"></span>Health facility</li>
+          <li><span class="lg lg-hazard"></span>Disruption area</li>
+        </ul>
+      </section>
+
+      <section class="card work-card">
+        <div class="tabs" role="tablist" aria-label="Plan views">
+          <button role="tab" id="tab-actions" aria-controls="panel" data-tab="actions">Action list</button>
+          <button role="tab" id="tab-stock" aria-controls="panel" data-tab="stock">Stock</button>
+          <button role="tab" id="tab-messages" aria-controls="panel" data-tab="messages">Messages</button>
+          <button role="tab" id="tab-follow" aria-controls="panel" data-tab="follow">Follow-up</button>
+          <button role="tab" id="tab-data" aria-controls="panel" data-tab="data">Data &amp; rules</button>
+        </div>
+        <div id="panel" role="tabpanel" tabindex="0"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><b>Prototype.</b> Clinical rules are configurable defaults based on WHO guidance and must be validated against national guidelines before use. Demo data is synthetic. Live forecasts come from Open-Meteo and are not official warnings.</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="print-sheet" class="print-sheet" aria-hidden="true"></section>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
